@@ -8,6 +8,8 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const connectDB = require("./connect_db");
 
+const authRoute = require("./routes/auth");
+
 // Init express
 const app = express();
 
@@ -34,6 +36,9 @@ const port = process.env.PORT || 5000;
 
 // Connect to MongoDB
 connectDB();
+
+app.use("/", authRoute);
+app.use("/auth", authRoute);
 
 app.listen(port, (req, res) => {
   console.log(`Server running on port ${port}`);
