@@ -4,6 +4,12 @@ const User = require("../models/User");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
+/**
+ * Verify fields and sign up user. MAkes sure that email does not already exist in the database.
+ * @param {object} req - Object containing firstName, email aad password
+ * @param {json} res - Success/ Failure
+ * @returns Response
+ */
 exports.signup = (req, res) => {
   const errors = validationResult(req);
 
@@ -34,6 +40,12 @@ exports.signup = (req, res) => {
   });
 };
 
+/**
+ * Verify fields and sign in user. Generate a token using jwt for the user to use as a unique identifier.
+ * @param {Object} req - email and password
+ * @param {JSON} res - SUCCESS/FAILURE status
+ * @returns Response
+ */
 exports.signin = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -72,6 +84,11 @@ exports.signin = (req, res) => {
     });
 };
 
+/**
+ * Sign out user.
+ * @param {null} req - null
+ * @param {JSON} res - SUCCESS/FAILURE
+ */
 exports.signout = (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "User signed out successfully." });

@@ -19,6 +19,30 @@ exports.createNewLoan = (req, res) => {
     });
   }
 
+  const data = req.body;
+  if (data.emi > data.loanAmount) {
+    // EMI cannot be greater than the LOAN.
+    return res
+      .status(400)
+      .json({ error: "EMI cannot be greater than Loan Amount." });
+  }
+
+  const startDate = new Date(data.startDate);
+  const expiryDate = new Date(data.expiryDate);
+
+  let months = (startDate.getFullYear() - expiryDate.getFullYear()) * 12;
+  months -= startDate.getMonth();
+  months += expiryDate.getMonth();
+
+  if (months * data.emi < data.loanAmount) {
+    // Loan Amount must be equal to EMI * (expiry date - start date)
+    return res
+      .status(400)
+      .json({
+        error: "Invalid EMI or Start Date or Expiry Date or Loan Amount",
+      });
+  }
+
   const newLoan = new Loan(req.body);
   newLoan.save((err, loan) => {
     if (err || !loan) {
@@ -27,10 +51,6 @@ exports.createNewLoan = (req, res) => {
     res.redirect(`getLoansByUserId?userId=${req.body.user}`);
   });
 };
-
-exports.editLoan = (req, res) => {};
-
-exports.deleteLoan = (req, res) => {};
 
 /**
  * Fetch all loans of a user. User defined by [userId].

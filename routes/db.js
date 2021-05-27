@@ -4,8 +4,6 @@ const express = require("express");
 const { check } = require("express-validator");
 const {
   createNewLoan,
-  deleteLoan,
-  editLoan,
   getUserById,
   getLoansByUserId,
 } = require("../controllers/db");
@@ -37,8 +35,6 @@ router.post(
   ],
   createNewLoan
 );
-router.post("/deleteLoan", deleteLoan);
-router.put("/editLoan", editLoan);
 
 router.get(
   "/getUserById",
