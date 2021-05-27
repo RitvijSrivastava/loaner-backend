@@ -9,6 +9,7 @@ const MongoStore = require("connect-mongo");
 const connectDB = require("./connect_db");
 
 const authRoute = require("./routes/auth");
+const dbRoute = require("./routes/db");
 
 // Init express
 const app = express();
@@ -39,6 +40,7 @@ connectDB();
 
 app.use("/", authRoute);
 app.use("/auth", authRoute);
+app.use("/db", dbRoute);
 
 app.listen(port, (req, res) => {
   console.log(`Server running on port ${port}`);

@@ -44,28 +44,32 @@ exports.signin = (req, res) => {
   }
 
   const { email, password } = req.body;
-  User.findOne({ email: email }).exec((err, user) => {
-    if (err || !user) {
-      return res.status(400).json({ error: "User not found!" });
-    }
+  User.findOne({ email: email })
+    .select("-__v")
+    .exec((err, user) => {
+      if (err || !user) {
+        return res.status(400).json({ error: "User not found!" });
+      }
 
-    if (!user.authenticate(password)) {
-      return res.status(400).json({
-        error: "Email and password do not match",
+      if (!user.authenticate(password)) {
+        return res.status(400).json({
+          error: "Email and password do not match",
+        });
+      }
+
+      // Create token for cookie
+      const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+
+      res.cookie("token", { expire: new Date() + 30 });
+
+      (user.salt = null), (user.encrypted_password = null);
+
+      return res.status(200).json({
+        message: "User signin in sucessfully.",
+        token: token,
+        user: user,
       });
-    }
-
-    // Create token for cookie
-    const token = jwt.sign({ _id: user._id }, process.env.SECRET);
-
-    res.cookie("token", { expire: new Date() + 30 });
-
-    return res.status(200).json({
-      message: "User signin in sucessfully.",
-      token: token,
-      user: user,
     });
-  });
 };
 
 exports.signout = (req, res) => {

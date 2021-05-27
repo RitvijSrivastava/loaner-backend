@@ -14,6 +14,11 @@ const Loan = new Schema(
       required: true,
       trim: true,
     },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     address: {
       type: String,
       required: true,
@@ -27,7 +32,7 @@ const Loan = new Schema(
       type: Number,
       required: true,
     },
-    startData: {
+    startDate: {
       type: Date,
       required: true,
     },
