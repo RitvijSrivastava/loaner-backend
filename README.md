@@ -2,6 +2,12 @@
 
 Server side code for Loaner.
 
+## Getting Started
+
+- Replicate the `.env` from `.env.example`.
+- Run `npm install` to install dependencies.
+- Run `npm run dev` to start nodemon and local server at [localhost:5000](http://localhost:5000)
+
 ## API Endpoints
 
 | Endpoint          | Type   | Input                                                                                                   | Description                                                                                                                                      |
